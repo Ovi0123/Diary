@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
+    <style>
+        .update-form {
+            display: none; /* Initially hide the update form */
+        }
+        .update-thought-textarea {
+            display: none; /* Initially hide the update thought textarea */
+        }
+        .hidden {
+            display: none;
+        }
+        .profile-picture {
+            max-width: 150px;
+            border-radius: 50%;
+        }
+        .background-image {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body style="background-image: url('{{ background_image_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+
+<div class="container mt-5">
+    {% if message %}
+        <p style="color: red; font-weight: bold; margin-left: 30px;">{{ message }}</p>
+    {% endif %}
+</div>
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+<div class="container mt-3 pagination-container" >
+    <!-- Include pagination links from pagination.html -->
+    <!-- {% set pagination_margin = pagination_margin %} -->
+    {% include 'pagination.html' %}
+</div>
+<a href="{{ url_for('export_thoughts') }}" class="btn btn-primary {% if not thoughts %}disabled{% endif %}" style="margin-left: 76%;" role="button">Export Thoughts</a>
+<!-- <button id="exportButton" class="btn btn-primary" style="display: none;" onclick="exportThoughts()">Export</button> -->
+<div class="container">
+<div class="card">
+<div class="container mt-5">
+    <div class="profile-section">
+        {% if user_data['profile_picture'] %}
+            <!-- <img src="{{ url_for('get_image', filename=user_data['profile_picture']) }}" alt="Profile Picture" class="profile-picture"> -->
+            <img src="{{ url_for('get_image', filename=user_data['profile_picture']) }}" alt="Profile Picture" class="profile-picture" onclick="triggerProfilePictureUpload()">
+        {% else %}
+            <img src="../static/images/default-profile.jpg" alt="Default Profile Picture" class="profile-picture" onclick="triggerProfilePictureUpload()">
+        {% endif %}
+        <!-- <form action="/upload_profile_picture" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="profile_picture" class="form-label">Upload Profile Picture</label>
+                <input class="form-control" type="file" id="profile_picture" name="profile_picture" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form> -->
+        <!-- Hidden file input for uploading a profile picture -->
+        <input class="form-control" type="file" id="profile_picture_upload" name="profile_picture" style="display: none;" accept="image/*">
+    <h1>Welcome, {{ user_data['username'] }}</h1>
+    <p>Email: {{ user_data['email'] }}</p>
+    <p>Sex: {{ user_data['sex'] }}</p>
+    <!-- Add more user details here if needed -->
+    <div class="container mt-5">
+        <button class="btn btn-primary" onclick="toggleUpdateForm()">Update Details</button>
+        <form action="{{ url_for('update_details') }}" method="post" class="update-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ user_data['username'] }}"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user_data['email'] }}"><br><br>
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <!-- Add more fields here as needed -->
+            <input type="submit" value="Update Details" class="btn btn-primary">
+            <button type="button" class="btn btn-secondary" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+    </div>
+    <!-- Background Image Section -->
+    <div class="card">
+        <div class="background-section">
+            <h1>Upload Background Image</h1>
+            <button id="uploadBackgroundImageButton" class="btn btn-primary upload-btn">Upload Background Image</button>
+            <form id="backgroundImageForm" action="/upload_background_image" method="POST" enctype="multipart/form-data" style="display: none;">
+                <input type="file" id="backgroundImageInput" name="background_image" accept="image/*">
+            </form>
+            <img id="backgroundImagePreview" class="background-image">
+            <!-- {% if user_data['background_image'] %}
+            <img src="{{ url_for('get_image', filename=user_data['background_image']) }}"  class="background-image" onclick="triggerBkgrndImgUpload()">
+       {% endif %} -->
+            <!-- {% if user_data['background_image'] %}
+                <img src="{{ url_for('get_image', filename=user_data['background_image']) }}" alt="Background Image" class="background-image">
+            {% endif %} -->
+            <!-- <form action="/upload_background_image" method="POST" enctype="multipart/form-data">
+                <div class="mb-3 text-center">
+                    <label for="background_image" class="form-label">Upload Background Image</label>
+                    <input class="form-control small-input" type="file" id="background_image" name="background_image" accept="image/*" required>
+                     -->
+                    <!-- Hidden file input for uploading a profile picture -->
+                    
+                    <!-- <input class="form-control" type="file" id="bkgrnd_img_upload" name="background_image" style="display: none;" accept="image/*"> -->
+    
+                <!-- </div>
+                <button type="submit" class="btn btn-primary" name="background_image" onclick="triggerBkgrndImgUpload()">Upload Background image</button>
+            </form> -->
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+{% if current_page == 1 %}
+<div class="container">
+<div class="card">
+<div class="container mt-5">
+    <h2>Please add your Thoughts here</h2>
+    <button class="btn btn-primary mt-3" onclick="toggleUpdateThoughtTextarea()">Please Add your Thought</button>
+    <form action="{{ url_for('save_thought') }}" method="post" class="update-thought-textarea">
+        <textarea class="styled-textarea" name="thought" id="thought" cols="30" rows="5" placeholder="What's on your mind today?"></textarea><br><br>
+        <label for="datetime">Date and Time:</label>
+        <input type="datetime-local" class="styled-datetime" id="datetime" name="datetime"><br><br>
+        <input type="submit" value="Save Thought" class="btn btn-primary">
+        <button type="button" class="btn btn-secondary" onclick="cancelUpdate()">Cancel</button>
+    </form>
+</div>
+</div>
+</div>
+{% endif %}
+
+{% if show_add_thought %}
+<div class="container">
+    <div class="card">
+    <div class="container mt-5">
+        <h2>Please add your Thoughts here</h2>
+        <button class="btn btn-primary mt-3" onclick="toggleUpdateThoughtTextarea()">Please Add your Thought</button>
+        <form action="{{ url_for('save_thought') }}" method="post" class="update-thought-textarea">
+            <textarea class="styled-textarea" name="thought" id="thought" cols="30" rows="5" placeholder="What's on your mind today?"></textarea><br><br>
+            <label for="datetime">Date and Time:</label>
+            <input type="datetime-local" class="styled-datetime" id="datetime" name="datetime"><br><br>
+            <input type="submit" value="Save Thought" class="btn btn-primary">
+            <button type="button" class="btn btn-secondary" onclick="cancelUpdate()">Cancel</button>
+        </form>
+    </div>
+    </div>
+    </div>
+{% endif %}
+
+<div class="container mt-5">
+    <h2 style="margin-left: 3%;color: blueviolet;"><b>Your Thoughts</b></h2>
+    {% if thoughts %}
+        {% for thought in thoughts %}
+        <div class="container">
+        <div class="card">
+        <div class="thought">
+            <p>{{ thought['thought'] }}</p>
+            <p>Date and Time: {{ thought['datetime'] }}</p>
+            <!-- Add a button to toggle the update thought textarea -->
+            <button class="btn center btn-primary" onclick="toggleUpdateThoughtTextarea{{ loop.index }}()">Update Thought</button>
+            <!-- Add the update thought form with a unique ID for each thought -->
+            <form action="{{ url_for('update_thought', thought_id=thought['_id'] , page=current_page) }}" method="post" class="update-thought-textarea-{{ loop.index }}" style="display: none;">
+                <textarea name="updated_thought" class="styled-textarea" id="updated_thought_{{ loop.index }}" cols="30" rows="5" placeholder="Update your thought">{{ thought['thought'] }}</textarea><br><br>
+                <input type="submit" value="Update Thought" class="btn btn-primary">
+            </form>
+            <!-- Add a button to delete the thought -->
+            <form action="{{ url_for('delete_thought', thought_id=thought['_id'] , page=current_page) }}" method="post">
+                <input type="submit" value="Delete Thought" class="btn btn-primary" onclick="return confirmDelete()">
+            </form>
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="margin-left: 3%;">No thoughts saved yet.</p>
+    {% endif %}
+</div>
+<div class="container">
+<div class="container mt-5">
+    <form action="{{ url_for('logout') }}" method="POST" style="text-align: center;">
+        <button type="submit" class="btn btn-primary" style="border-radius: 20px;">Log Out</button>
+    </form>
+</div>
+<div class="container mt-3" style="text-align: center;"> <!-- New container for the logout button -->
+<button class="center btn-info" style=" border-radius: 20px;"><a href="{{ url_for('home_page') }}" style="text-decoration: none; color: white;"><b>Back to Home</b></a></button>
+</div>
+</div>
+</div>
+<div class="container mt-3 pagination-container">
+    <!-- Include pagination links from pagination.html -->
+    <!-- {% set pagination_margin = pagination_margin %} -->
+    {% include 'pagination.html' %}
+</div>
+<script>
+    // Define toggle functions for update thought textareas
+    {% for thought in thoughts %}
+    function toggleUpdateThoughtTextarea{{ loop.index }}() {
+        var updateThoughtTextarea = document.querySelector('.update-thought-textarea-{{ loop.index }}');
+        updateThoughtTextarea.style.display = updateThoughtTextarea.style.display === 'none' ? 'block' : 'none';
+    }
+    {% endfor %}
+
+</script>
+<script src="../static/js/dashboard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  
+</body>
+</html>
