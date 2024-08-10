@@ -5,7 +5,7 @@ from pymongo.errors import ServerSelectionTimeoutError
 
 def connect_to_database():
     # try :
-    client = MongoClient('mongodb://localhost:27017/')
+    client = MongoClient('mongodb://mongo:27017/')
     db = client['mydatabase']
     return db
     # except ServerSelectionTimeoutError as e :
