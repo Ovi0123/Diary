@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from flask import render_template
-from pymongo.errors import ServerSelectionTimeoutError
 
 
 def connect_to_database():
