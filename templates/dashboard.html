@@ -9,10 +9,10 @@
     <link rel="icon" type="image/x-icon" href="../static/favicon.ico">
     <style>
         .update-form {
-            display: none; /* Initially hide the update form */
+            display: none; 
         }
         .update-thought-textarea {
-            display: none; /* Initially hide the update thought textarea */
+            display: none; 
         }
         .hidden {
             display: none;
@@ -47,35 +47,22 @@
     {% endwith %}
 </div>
 <div class="container mt-3 pagination-container" >
-    <!-- Include pagination links from pagination.html -->
-    <!-- {% set pagination_margin = pagination_margin %} -->
     {% include 'pagination.html' %}
 </div>
 <a href="{{ url_for('export_thoughts') }}" class="btn btn-primary {% if not thoughts %}disabled{% endif %}" style="margin-left: 76%;" role="button">Export Thoughts</a>
-<!-- <button id="exportButton" class="btn btn-primary" style="display: none;" onclick="exportThoughts()">Export</button> -->
 <div class="container">
 <div class="card">
 <div class="container mt-5">
     <div class="profile-section">
         {% if user_data['profile_picture'] %}
-            <!-- <img src="{{ url_for('get_image', filename=user_data['profile_picture']) }}" alt="Profile Picture" class="profile-picture"> -->
             <img src="{{ url_for('get_image', filename=user_data['profile_picture']) }}" alt="Profile Picture" class="profile-picture" onclick="triggerProfilePictureUpload()">
         {% else %}
             <img src="../static/images/default-profile.jpg" alt="Default Profile Picture" class="profile-picture" onclick="triggerProfilePictureUpload()">
         {% endif %}
-        <!-- <form action="/upload_profile_picture" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="profile_picture" class="form-label">Upload Profile Picture</label>
-                <input class="form-control" type="file" id="profile_picture" name="profile_picture" accept="image/*" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form> -->
-        <!-- Hidden file input for uploading a profile picture -->
         <input class="form-control" type="file" id="profile_picture_upload" name="profile_picture" style="display: none;" accept="image/*">
     <h1>Welcome, {{ user_data['username'] }}</h1>
     <p>Email: {{ user_data['email'] }}</p>
     <p>Sex: {{ user_data['sex'] }}</p>
-    <!-- Add more user details here if needed -->
     <div class="container mt-5">
         <button class="btn btn-primary" onclick="toggleUpdateForm()">Update Details</button>
         <form action="{{ url_for('update_details') }}" method="post" class="update-form">
@@ -85,13 +72,12 @@
             <input type="email" id="email" name="email" value="{{ user_data['email'] }}"><br><br>
             <label for="password">New Password:</label>
             <input type="password" id="password" name="password"><br><br>
-            <!-- Add more fields here as needed -->
             <input type="submit" value="Update Details" class="btn btn-primary">
             <button type="button" class="btn btn-secondary" onclick="cancelUpdate()">Cancel</button>
         </form>
     </div>
     </div>
-    <!-- Background Image Section -->
+    
     <div class="card">
         <div class="background-section">
             <h1>Upload Background Image</h1>
@@ -100,24 +86,6 @@
                 <input type="file" id="backgroundImageInput" name="background_image" accept="image/*">
             </form>
             <img id="backgroundImagePreview" class="background-image">
-            <!-- {% if user_data['background_image'] %}
-            <img src="{{ url_for('get_image', filename=user_data['background_image']) }}"  class="background-image" onclick="triggerBkgrndImgUpload()">
-       {% endif %} -->
-            <!-- {% if user_data['background_image'] %}
-                <img src="{{ url_for('get_image', filename=user_data['background_image']) }}" alt="Background Image" class="background-image">
-            {% endif %} -->
-            <!-- <form action="/upload_background_image" method="POST" enctype="multipart/form-data">
-                <div class="mb-3 text-center">
-                    <label for="background_image" class="form-label">Upload Background Image</label>
-                    <input class="form-control small-input" type="file" id="background_image" name="background_image" accept="image/*" required>
-                     -->
-                    <!-- Hidden file input for uploading a profile picture -->
-                    
-                    <!-- <input class="form-control" type="file" id="bkgrnd_img_upload" name="background_image" style="display: none;" accept="image/*"> -->
-    
-                <!-- </div>
-                <button type="submit" class="btn btn-primary" name="background_image" onclick="triggerBkgrndImgUpload()">Upload Background image</button>
-            </form> -->
         </div>
     </div>
 </div>
@@ -169,14 +137,11 @@
         <div class="thought">
             <p>{{ thought['thought'] }}</p>
             <p>Date and Time: {{ thought['datetime'] }}</p>
-            <!-- Add a button to toggle the update thought textarea -->
             <button class="btn center btn-primary" onclick="toggleUpdateThoughtTextarea{{ loop.index }}()">Update Thought</button>
-            <!-- Add the update thought form with a unique ID for each thought -->
             <form action="{{ url_for('update_thought', thought_id=thought['_id'] , page=current_page) }}" method="post" class="update-thought-textarea-{{ loop.index }}" style="display: none;">
                 <textarea name="updated_thought" class="styled-textarea" id="updated_thought_{{ loop.index }}" cols="30" rows="5" placeholder="Update your thought">{{ thought['thought'] }}</textarea><br><br>
                 <input type="submit" value="Update Thought" class="btn btn-primary">
             </form>
-            <!-- Add a button to delete the thought -->
             <form action="{{ url_for('delete_thought', thought_id=thought['_id'] , page=current_page) }}" method="post">
                 <input type="submit" value="Delete Thought" class="btn btn-primary" onclick="return confirmDelete()">
             </form>
@@ -194,18 +159,15 @@
         <button type="submit" class="btn btn-primary" style="border-radius: 20px;">Log Out</button>
     </form>
 </div>
-<div class="container mt-3" style="text-align: center;"> <!-- New container for the logout button -->
+<div class="container mt-3" style="text-align: center;"> 
 <button class="center btn-info" style=" border-radius: 20px;"><a href="{{ url_for('home_page') }}" style="text-decoration: none; color: white;"><b>Back to Home</b></a></button>
 </div>
 </div>
 </div>
 <div class="container mt-3 pagination-container">
-    <!-- Include pagination links from pagination.html -->
-    <!-- {% set pagination_margin = pagination_margin %} -->
     {% include 'pagination.html' %}
 </div>
 <script>
-    // Define toggle functions for update thought textareas
     {% for thought in thoughts %}
     function toggleUpdateThoughtTextarea{{ loop.index }}() {
         var updateThoughtTextarea = document.querySelector('.update-thought-textarea-{{ loop.index }}');

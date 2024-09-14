@@ -29,7 +29,6 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-color: #78909C; */
     background-image: url("/static/images/colorful_clouds_mountains_nature_anime_boys_universe_reflection_anime_sky-2273348.jpg!d");
     min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */
 }
@@ -66,10 +65,7 @@ p {
 }
 /* Center content horizontally and vertically */
 .container {
-    /* display: flex; */
-    justify-content: center; /* Center horizontally */
-    /* align-items: center; /* Center vertically */
-    /* height: 100vh; /* Full viewport height */
+    justify-content: center; 
 }
 .profile-section {
     text-align: center;

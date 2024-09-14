@@ -5,8 +5,6 @@ from db.db_connection import connect_to_database
 db = connect_to_database()
 users_collection = db['users']
 
-# Now you can use the users_collection to perform database operations
-
 
 def login_user(username_or_email, password, sex):
     try:

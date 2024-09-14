@@ -2,10 +2,6 @@ from passlib.hash import bcrypt
 from pymongo.errors import ServerSelectionTimeoutError
 from db.db_connection import connect_to_database
 
-# client = MongoClient('mongodb://localhost:27017/')
-# db = client['mydatabase']
-# users_collection = db['users']
-
 db = connect_to_database()
 users_collection = db['users']
 
