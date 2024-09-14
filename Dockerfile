@@ -14,8 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_ENV=development
+ENV FLASK_ENV=production
 
 # Run main.py when the container launches
-CMD ["python", "main.py"]
+#CMD ["python", "main.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "main:app"]
 
