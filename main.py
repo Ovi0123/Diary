@@ -252,7 +252,11 @@ def register():
         session['username'] = str(username)
         return redirect(url_for('dashboard'))
     else:
-        return render_template('register.html', message=message_or_user_id)
+        if message_or_user_id == "Database connection issue.":
+            flash("Some Disturbance occurred, just try after some time", "error")
+            return redirect(url_for('home_page'))
+        else:
+            return render_template('register.html', message=message_or_user_id)
    
 
 
@@ -288,7 +292,11 @@ def login():
         else:
             return "User data does not contain username. Please try again."
     else:
-        return message_or_user_id + " Please <a href='/login/'>try again</a> or New user? Please Register <a href='/register'>here</a>"
+        if message_or_user_id == "Database connection issue.":
+            flash("Some Disturbance occurred, just try after some time", "error")
+            return redirect(url_for('home_page'))
+        else:
+            return message_or_user_id + " Please <a href='/login/'>try again</a> or New user? Please Register <a href='/register'>here</a>"
     
         
 @app.route('/update_details', methods=['POST'])

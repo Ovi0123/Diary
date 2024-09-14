@@ -1,6 +1,5 @@
 from passlib.hash import bcrypt
 from pymongo.errors import ServerSelectionTimeoutError
-from flask import redirect, url_for, flash
 from db.db_connection import connect_to_database
 
 # client = MongoClient('mongodb://localhost:27017/')
@@ -22,6 +21,5 @@ def register_user(username, email, password, sex):
         user_id = users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'sex': sex}).inserted_id
         return True, user_id
     except ServerSelectionTimeoutError:
-        flash("Some Disturbance occurred, just try after some time", "error")
-        return redirect(url_for('home_page'))
+        return False, "Database connection issue."
     
