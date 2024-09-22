@@ -31,7 +31,13 @@ body {
     background-repeat: no-repeat;
     background-image: url("/static/images/colorful_clouds_mountains_nature_anime_boys_universe_reflection_anime_sky-2273348.jpg!d");
     min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */
+    transition: opacity 0.5s ease; /* For smooth page transitions */
 }
+
+body.page-loading {
+    opacity: 0;
+}
+
 /* Typography */
 .center {
     text-align: center;
@@ -77,7 +83,6 @@ p {
     cursor: pointer;
 }
 
-
 .card {
     margin: 0 30px 60px;
     padding: 20px 40px;
@@ -85,15 +90,15 @@ p {
     width: auto;
     box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #1976D2 0%, #a1fd85 100%);
+    color: #ffffff8b;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px) scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25); /* Increased shadow on hover */
 }
 
 .card h2 {
@@ -114,14 +119,14 @@ p {
     background-color: #fff;
     color: #fda085;
     text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
 .card a:hover {
     background-color: #fda085;
     color: #fff;
+    transform: translateY(-3px); /* Slight lift on hover */
 }
-
 
 @media only screen and (max-width: 520px) {
     .card-wrapper {
@@ -143,6 +148,24 @@ form.loading {
     pointer-events: none;
     opacity: 0.75;
 }
+
+form.loading:after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .small-input {
     width: 300px; /* Adjust the width as needed */
     margin-left: 35%;
@@ -168,12 +191,13 @@ label {
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     display: block;
     background: var(--almost-white);
-    transition: border-color .15s ease;
+    transition: border-color .15s ease, box-shadow 0.2s ease;
 }
 
 .field:focus {
     border-color: var(--grey-medium);
     outline: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .error {
@@ -205,11 +229,12 @@ label {
     cursor: pointer;
     display: inline-block;
     background: var(--primary);
-    transition: color .15s ease, background-color .15s ease;
+    transition: color .15s ease, background-color .15s ease, transform 0.2s ease;
 }
 
 .btn:hover {
     background: var(--primary-dark);
+    transform: translateY(-3px); /* Lift button on hover */
 }
 
 .btn--secondary {
@@ -252,6 +277,7 @@ label {
     color: #007bff; /* Link color */
     border: 1px solid #007bff; /* Border color */
     border-radius: 5px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 .pagination li.active a {
@@ -260,6 +286,7 @@ label {
 }
 
 .pagination li a:hover {
+    transform: scale(1.1); /* Slight enlargement on hover */
     background-color: #f0f0f0; /* Hover background color */
 }
 
@@ -271,9 +298,9 @@ label {
 .pagination-container {
     display: flex;             /* Use flexbox for centering */
     margin-bottom: 20px;      /* Add margin to separate pagination from cards */
-    align-items: ;
 }
 
+/* Styled Textarea */
 .styled-textarea {
     width: 100%; /* Make it responsive */
     min-height: 150px; /* Increase the height */
@@ -281,10 +308,10 @@ label {
     font-size: 16px; /* Increase font size */
     font-family: Arial, sans-serif; /* Change font family */
     border: 1px solid #ccc; /* Add a border */
-    border-radius: 5px; /* Round the corners */
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add a subtle shadow */
-    resize: vertical; /* Allow vertical resizing only */
+    border-radius: 5px; /* Round corners */
+    resize: vertical; /* Allow only vertical resizing */
 }
+
 
 .styled-textarea:focus {
     border-color: #66afe9; /* Change border color on focus */
