@@ -15,7 +15,7 @@ from user.dashboard import get_user_data, save_user_thought, update_user_details
 
 
 app = Flask(__name__)
-app.secret_key = b'8CJWgCQw4u01NmPiPAP0lWJIMghAoBrwecQDP0LVsT0='
+app.secret_key = b'gSnApZbWGl8mZlHFwj_QszpUN06Q0IAjGRXnXZaUYeI='
 
 def load_key():
     return open("secret.key", "rb").read()
