@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session , make_response , send_file , flash
 import os
+from prometheus_flask_exporter import PrometheusMetrics
 from db.db_connection import connect_to_database
 from werkzeug.utils import secure_filename
 import gridfs
@@ -15,6 +16,7 @@ from user.dashboard import get_user_data, save_user_thought, update_user_details
 
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 app.secret_key = b'oBe6cN2foAllfHQL1I0FrLGMJqZRe470lxCJz3TH-oE='
 
 def load_key():
