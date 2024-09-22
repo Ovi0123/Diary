@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session , make_response , send_file , flash
 import os
-from prometheus_flask_exporter import PrometheusMetrics
 from db.db_connection import connect_to_database
 from werkzeug.utils import secure_filename
 import gridfs
@@ -16,8 +15,7 @@ from user.dashboard import get_user_data, save_user_thought, update_user_details
 
 
 app = Flask(__name__)
-metrics = PrometheusMetrics(app)
-app.secret_key = b'oBe6cN2foAllfHQL1I0FrLGMJqZRe470lxCJz3TH-oE='
+app.secret_key = b'gSnApZbWGl8mZlHFwj_QszpUN06Q0IAjGRXnXZaUYeI='
 
 def load_key():
     return open("secret.key", "rb").read()
@@ -132,12 +130,17 @@ def dashboard():
     start_index = (page - 1) * per_page
     end_index = start_index + per_page
     paginated_thoughts = user_thoughts[start_index:end_index]
+
+    # Prepare for pagination display
+    page_range_start = max(2, page - 1)
+    page_range_end = min(total_pages, page + 1)
+
     for thought in paginated_thoughts:
         thought['datetime'] = thought['datetime'].strftime('%Y-%m-%d %H:%M:%S')
     if not paginated_thoughts:
         return render_template('dashboard.html', user_data=user_data, thoughts=[], total_pages=total_pages, current_page=page, message=None, background=background, background_image_url=background_image_url, show_add_thought=True)
     message = session.pop('message', None) 
-    return render_template('dashboard.html', user_data=user_data, thoughts=paginated_thoughts, total_pages=total_pages, current_page=page, message=message , background=background, background_image_url=background_image_url)
+    return render_template('dashboard.html', user_data=user_data, thoughts=paginated_thoughts, total_pages=total_pages, current_page=page, message=message , background=background, background_image_url=background_image_url, page_range_start=page_range_start, page_range_end=page_range_end)
 
     
 
