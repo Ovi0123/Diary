@@ -226,27 +226,27 @@ label {
     background: var(--secondary-dark);
 }
 
-/* pagination links */
-.pagination-container {
-    margin-bottom: 20px; /* Add margin to separate pagination from cards */
-}
-
+/* Pagination links */
 .pagination {
-    display: inline-block;
+    display: flex; /* Use flex to keep items inline */
+    align-items: center; /* Align items vertically in the center */
     margin: 0;
     padding: 0;
-    margin-left: 16px;
-    right: 0;
 }
-    
+
+.pagination .page-item {
+    display: inline; /* Ensure items display inline */
+}
+
 .pagination li {
-    display: inline;
+    display: inline; /* Ensure list items are inline */
     list-style-type: none;
     margin-right: 5px; /* Adjust spacing between pagination items */
+    margin-left: 5px;
 }
 
 .pagination li a {
-    display: inline-block;
+    display: flex; /* Keep links inline */
     padding: 5px 10px;
     text-decoration: none;
     color: #007bff; /* Link color */
@@ -261,6 +261,17 @@ label {
 
 .pagination li a:hover {
     background-color: #f0f0f0; /* Hover background color */
+}
+
+.pagination .disabled {
+    margin: 0 5px; /* Add margin for spacing */
+    color: #6c757d; /* Optional: change color for disabled */
+}
+
+.pagination-container {
+    display: flex;             /* Use flexbox for centering */
+    margin-bottom: 20px;      /* Add margin to separate pagination from cards */
+    align-items: ;
 }
 
 .styled-textarea {
